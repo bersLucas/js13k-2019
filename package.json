@@ -5,6 +5,7 @@
   "author": "bersLucas <contact@lucasbersier.com>",
   "license": "MIT",
   "private": false,
+  "browserslist": "> 0.25%, not dead",
   "scripts": {
     "build": "node build.js"
   },
@@ -19,6 +20,7 @@
     "log-update": "^3.2.0",
     "mkdirp": "^0.5.1",
     "pug": "^2.0.4",
-    "sass": "^1.22.7"
+    "sass": "^1.22.7",
+    "terser": "^4.1.4"
   }
 }

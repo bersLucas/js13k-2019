@@ -1,5 +1,77 @@
-html {
-    span{
-        color: red;
+html, body {
+    margin: 0;
+}
+
+body {
+    $tileColor: #dcdcdc;
+    $tileSize: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #fff;;
+    background-image: linear-gradient(45deg, $tileColor 25%, transparent 25%, transparent 75%, $tileColor 75%, $tileColor), linear-gradient(45deg, $tileColor 25%, transparent 25%, transparent 75%, $tileColor 75%, $tileColor);
+    background-size: $tileSize $tileSize;
+    background-position: 0 0, ($tileSize/2) ($tileSize/2);
+
+}
+
+.row {
+    line-height: 0;
+}
+
+.col {
+    display: inline-block;
+}
+
+.tile {
+    $tileSize: 3em;
+    width: $tileSize;
+    height: $tileSize;
+    background: transparent;
+    border-radius: 100%;
+    margin: ($tileSize / 2) - ($tileSize / 3);
+    position: relative;
+    transition: all .5s ease-out;
+
+    &:after {
+        $outlineSize: .5em;
+        content: "";
+        width: calc(100% + #{$outlineSize});
+        height: calc(100% + #{$outlineSize});
+        display: block;
+        position: absolute;
+        z-index: -1;
+        background: currentColor;
+        opacity: 0.25;
+        left: -($outlineSize / 2);
+        top: -($outlineSize / 2);
+        border-radius: 100%;
+        transition: all .25s ease-out;
+    }
+
+    &.active {
+        width: $tileSize + ((($tileSize / 2) - ($tileSize / 3)) * 2);
+        height: $tileSize + ((($tileSize / 2) - ($tileSize / 3)) * 2);
+        margin: 0;
+        // Some animation here.
+    }
+
+    &:hover{
+        cursor: pointer;
+         
+        &:after {
+            $outlineSize: 1.25em;
+            width: calc(100% + #{$outlineSize});
+            height: calc(100% + #{$outlineSize});
+            left: -($outlineSize / 2);
+            top: -($outlineSize / 2);
+        }
+    }
+
+    &:before {
+        content: "";
+        width: 100%;
+        height: 100%;
     }
 }

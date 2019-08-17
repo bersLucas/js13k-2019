@@ -6,6 +6,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const { inlineSource } = require('inline-source');
 const del = require('del');
+const terser = require('terser');
 
 const transpileJS = (files) => Promise.all(
   files.map((file) => babel.transformFileAsync(`src/${file}`, {
@@ -16,7 +17,10 @@ const transpileJS = (files) => Promise.all(
 );
 
 const writeJS = (files) => Promise.all(
-  files.map((file) => fs.writeFile(`dist/.tmp/${path.basename(file.options.filename)}`, file.code)),
+  files.map((file) => {
+    const minifiedCode = terser.minify(file.code);
+    return fs.writeFile(`dist/.tmp/${path.basename(file.options.filename)}`, minifiedCode.code);
+  }),
 );
 
 const runBabel = () => fs.readdir('src')
@@ -49,7 +53,6 @@ const runSass = () => fs.writeFile(
       runSass(),
     ]);
 
-    // inline-source
     const html = await inlineSource(path.resolve('dist/.tmp/index.html'), {
       compress: true,
       rootpath: path.resolve('dist/.tmp'),

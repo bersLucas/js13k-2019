@@ -4,6 +4,15 @@ html(lang="en")
         link(rel="stylesheet" src="style.css" inline)
 
     body
-        span hello world!
+        main
+            - var h = 0;
+            while h < 5
+                - h++;
+                div.row
+                    - var w = 0;
+                    while w < 4
+                        - w++
+                        div.col
+                            div.tile
 
 script(src="index.js" inline)
