@@ -13,8 +13,8 @@
   "dependencies": {
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
-    "del": "^5.0.0",
-    "eslint": "^6.1.0",
+    "del": "^5.1.0",
+    "eslint": "^6.2.2",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2",
     "inline-source": "^7.1.0",
@@ -22,7 +22,7 @@
     "mkdirp": "^0.5.1",
     "pug": "^2.0.4",
     "sass": "^1.22.7",
-    "terser": "^4.1.4"
+    "terser": "^4.2.1"
   },
   "devDependencies": {
     "node-watch": "^0.6.3"
