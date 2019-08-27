@@ -2,76 +2,61 @@ html, body {
     margin: 0;
 }
 
+html {
+    --cursorScale: 1; 
+    --theme: #00adef;
+}
+
+html.ingame {
+    cursor: none;
+}
+
 body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     $tileColor: #dcdcdc;
     $tileSize: 2em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
     background-color: #fff;;
     background-image: linear-gradient(45deg, $tileColor 25%, transparent 25%, transparent 75%, $tileColor 75%, $tileColor), linear-gradient(45deg, $tileColor 25%, transparent 25%, transparent 75%, $tileColor 75%, $tileColor);
     background-size: $tileSize $tileSize;
     background-position: 0 0, ($tileSize/2) ($tileSize/2);
-
 }
 
-.row {
-    line-height: 0;
+#cursor {
+    $cursorWidth: 20px;
+    visibility: hidden;
+    transform: translate(var(--mouse-x),var(--mouse-y)) scale(var(--cursorScale));
+    width: $cursorWidth;
+    height: $cursorWidth;
+    background: var(--theme);
+    position: absolute;
+    border-radius: 0.25em;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
 }
 
-.col {
-    display: inline-block;
+#board {
+    $borderWidth: .5em;
+    width: calc(var(--board-w) + #{$borderWidth});
+    height: calc(var(--board-h) + #{$borderWidth});
+    position: absolute;
+    background: #333;
+    z-index: -1;
+    border-radius: $borderWidth;
+    border: $borderWidth solid var(--theme);
 }
 
-.tile {
-    $tileSize: 3em;
-    width: $tileSize;
-    height: $tileSize;
-    background: transparent;
-    border-radius: 100%;
-    margin: ($tileSize / 2) - ($tileSize / 3);
-    position: relative;
-    transition: all .5s ease-out;
-
-    &:after {
-        $outlineSize: .5em;
-        content: "";
-        width: calc(100% + #{$outlineSize});
-        height: calc(100% + #{$outlineSize});
-        display: block;
-        position: absolute;
-        z-index: -1;
-        background: currentColor;
-        opacity: 0.25;
-        left: -($outlineSize / 2);
-        top: -($outlineSize / 2);
-        border-radius: 100%;
-        transition: all .25s ease-out;
+.ingame {
+    button#start {
+        visibility: hidden;
     }
-
-    &.active {
-        width: $tileSize + ((($tileSize / 2) - ($tileSize / 3)) * 2);
-        height: $tileSize + ((($tileSize / 2) - ($tileSize / 3)) * 2);
-        margin: 0;
-        // Some animation here.
-    }
-
-    &:hover{
-        cursor: pointer;
-         
-        &:after {
-            $outlineSize: 1.25em;
-            width: calc(100% + #{$outlineSize});
-            height: calc(100% + #{$outlineSize});
-            left: -($outlineSize / 2);
-            top: -($outlineSize / 2);
-        }
-    }
-
-    &:before {
-        content: "";
-        width: 100%;
-        height: 100%;
+    #cursor {
+        visibility: visible
     }
 }

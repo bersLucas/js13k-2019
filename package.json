@@ -7,7 +7,8 @@
   "private": false,
   "browserslist": "> 0.25%, not dead",
   "scripts": {
-    "build": "node build.js"
+    "build": "node build.js",
+    "watch": "node watch.js"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",
@@ -22,5 +23,8 @@
     "pug": "^2.0.4",
     "sass": "^1.22.7",
     "terser": "^4.1.4"
+  },
+  "devDependencies": {
+    "node-watch": "^0.6.3"
   }
 }

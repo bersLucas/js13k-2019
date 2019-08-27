@@ -1,18 +1,13 @@
 doctype html
 html(lang="en")
     head
+        meta(charset="utf-8")
+        title JS13⭐2019░LUCAS_BERSIER
         link(rel="stylesheet" src="style.css" inline)
 
     body
-        main
-            - var h = 0;
-            while h < 5
-                - h++;
-                div.row
-                    - var w = 0;
-                    while w < 4
-                        - w++
-                        div.col
-                            div.tile
-
+        div#cursor
+        div#board
+        button#start Start!
+        
 script(src="index.js" inline)
