@@ -81,6 +81,8 @@ body {
     will-change: width height;
     border-radius: 100%;
     position: absolute;
+    white-space: nowrap;
+    font-size: 60%;
     @include center();
 }
 

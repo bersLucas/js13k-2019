@@ -99,12 +99,12 @@ const init = () => {
   $html.style.setProperty('--board-h', `${board.h}px`);
 
   const enemySpawnInterval = setInterval(() => {
-    enemies.push(new Enemy(-200 + Math.ceil(Math.random() * 400), -200 + Math.ceil(Math.random() * 400), 5));
-  }, 250);
-
-  setTimeout(() => {
-    clearInterval(enemySpawnInterval);
-  }, 2000);
+    enemies.push(new Enemy(
+      (board.w / 2) - 50,
+      Math.random() * board.h,
+      0.3,
+    ));
+  }, 500);
 };
 
 document.querySelector('#start').onclick = () => {
@@ -114,23 +114,51 @@ document.querySelector('#start').onclick = () => {
 };
 
 // TODO: Import this
-const enemies = [];
+let enemies = [];
 
 class Enemy {
   constructor(x, y, speed) {
     this.x = x;
     this.y = y;
+    this.speed = speed;
+
     const elem = document.createElement('div');
     elem.className = 'enemy';
     elem.style.transform = `translate(${this.x}px, ${this.y}px)`;
     $container.appendChild(elem);
     this.elem = elem;
 
-    this.rad = Math.atan2(this.y - player.y, this.x - player.x);
-    elem.innerHTML = this.rad;
+    const angle = Math.atan2(player.y - this.y, player.x - this.x) * (180 / Math.PI);
+    this.dir = {
+      x: ((-1 * (angle ** 2)) / 16200) + 1,
+      y: Math.sin(angle / (180 / Math.PI)),
+    };
+
+    this.target = {
+      x: player.x,
+      y: player.y,
+    };
   }
 
   move(dt) {
+    this.x += this.dir.x * (dt * this.speed);
+    this.y += this.dir.y * (dt * this.speed);
 
+    if (
+      this.x > (board.w / 2)
+    || this.y > (board.h / 2)
+    || this.x < -(board.w / 2)
+    || this.y < -(board.h / 2)
+    ) {
+      this.remove();
+    }
+    this.elem.style.transform = `translate(${this.x}px, ${this.y}px)`;
+  }
+
+  remove() {
+    console.log(this.x, this.y, board.w, board.h);
+    console.log('remove');
+    enemies.splice(enemies.indexOf(this), 1);
+    this.elem.remove();
   }
 }
