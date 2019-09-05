@@ -73,20 +73,7 @@ body {
     }
 }
 
-.enemy {
-    position: absolute;
-    background-color: red;
-    width: 15px;
-    height: 15px;
-    will-change: width height;
-    border-radius: 100%;
-    position: absolute;
-    white-space: nowrap;
-    font-size: 60%;
-    @include center();
-}
-
-#board {
+#board, canvas {
     $borderWidth: .5em;
     width: calc(var(--board-w) + #{$borderWidth});
     height: calc(var(--board-h) + #{$borderWidth});
@@ -121,4 +108,15 @@ nav {
         line-height: calc(20px + .25em);
         font-weight: bold;
     }
+}
+
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    position: absolute;
+    padding: .5em;
+    z-index: 1;
+    background: transparent;
 }

@@ -1,5 +1,10 @@
 const $html = document.documentElement;
 const $container = document.querySelector('#container');
+const $canvas = document.querySelector('canvas');
+const ctx = $canvas.getContext('2d');
+let enemies = [];
+let paused = false;
+const intervals = [];
 
 const modes = {
   1: {
@@ -72,14 +77,6 @@ document.addEventListener('keydown', (e) => {
   }
 }, false);
 
-document.addEventListener('pointerlockchange', () => {
-  if (document.pointerLockElement) {
-    $html.classList.add('ingame');
-  } else {
-    // $html.classList.remove('ingame');
-  }
-}, false);
-
 let start = null;
 const draw = (timestamp) => {
   $html.style.setProperty('--mouse-x', `${player.x}px`);
@@ -88,45 +85,74 @@ const draw = (timestamp) => {
   const dt = timestamp - start;
   start = timestamp;
 
+  ctx.clearRect(0, 0, $canvas.width, $canvas.height);
   enemies.forEach((enemy) => {
     enemy.move(dt);
   });
-  requestAnimationFrame(draw);
+
+  if (!paused) requestAnimationFrame(draw);
+};
+
+const getOffscreenSpawn = (distance) => {
+  const xDistance = Math.random() * (distance * 2) + -distance;
+  const yDistance = Math.random() * (distance * 2) + -distance;
+  return [
+    xDistance > 0 ? (board.w / 2) + xDistance : -(board.w / 2) - xDistance,
+    yDistance > 0 ? (board.h / 2) + yDistance : -(board.h / 2) - yDistance,
+  ];
 };
 
 const init = () => {
   $html.style.setProperty('--board-w', `${board.w}px`);
   $html.style.setProperty('--board-h', `${board.h}px`);
 
-  const enemySpawnInterval = setInterval(() => {
-    enemies.push(new Enemy(
-      (board.w / 2) - 50,
-      Math.random() * board.h,
-      0.3,
+  $canvas.width = board.w;
+  $canvas.height = board.h;
+
+  intervals.push(setInterval(() => {
+    const enemyPosition = getOffscreenSpawn(100);
+
+    enemies.push(new Enemy1(
+      enemyPosition[0],
+      enemyPosition[1],
+      0.5,
     ));
-  }, 500);
+  }, 50));
 };
 
 document.querySelector('#start').onclick = () => {
   document.body.requestPointerLock();
-  init();
-  draw();
 };
 
-// TODO: Import this
-let enemies = [];
+document.addEventListener('pointerlockchange', () => {
+  if (document.pointerLockElement) {
+    paused = false;
+    $html.classList.add('ingame');
+    init();
+    draw();
+  } else {
+    $html.classList.remove('ingame');
+    init();
+    paused = true;
+    intervals.forEach((interval) => {
+      clearInterval(interval);
+    });
+    enemies = [];
+  }
+}, false);
 
-class Enemy {
+// TODO: Import this
+class Enemy1 {
   constructor(x, y, speed) {
     this.x = x;
     this.y = y;
+    this.w = 10;
+    this.h = 10;
+
     this.speed = speed;
 
-    const elem = document.createElement('div');
-    elem.className = 'enemy';
-    elem.style.transform = `translate(${this.x}px, ${this.y}px)`;
-    $container.appendChild(elem);
-    this.elem = elem;
+    this.ctx = $canvas.getContext('2d');
+    this.ctx.fillStyle = 'green';
 
     const angle = Math.atan2(player.y - this.y, player.x - this.x) * (180 / Math.PI);
     this.dir = {
@@ -144,21 +170,14 @@ class Enemy {
     this.x += this.dir.x * (dt * this.speed);
     this.y += this.dir.y * (dt * this.speed);
 
-    if (
-      this.x > (board.w / 2)
-    || this.y > (board.h / 2)
-    || this.x < -(board.w / 2)
-    || this.y < -(board.h / 2)
-    ) {
-      this.remove();
+    // if((this.x - this.w) <)
+
+    if (this.x) {
+      this.ctx.fillRect(this.x + (board.w / 2), this.y + (board.h / 2), this.w, this.h);
     }
-    this.elem.style.transform = `translate(${this.x}px, ${this.y}px)`;
   }
 
   remove() {
-    console.log(this.x, this.y, board.w, board.h);
-    console.log('remove');
     enemies.splice(enemies.indexOf(this), 1);
-    this.elem.remove();
   }
 }
