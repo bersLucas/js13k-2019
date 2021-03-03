@@ -20,7 +20,7 @@
     "inline-source": "^7.1.0",
     "log-update": "^3.2.0",
     "mkdirp": "^0.5.1",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "sass": "^1.22.7",
     "terser": "^4.2.1",
     "node-watch": "^0.6.3"
